@@ -231,7 +231,7 @@
                             id="brands"
                             name="brands"
                             v-model="vehicle.brand"
-                            :disabled="allBrands == null"
+                            :disabled="vehicle.type === ''"
                             @change="fetchModels"
                         >
                             <option value="0" selected>Selecione uma marca</option>
@@ -251,7 +251,7 @@
                             id="models"
                             name="models"
                             v-model="vehicle.model"
-                            :disabled="allModels == null"
+                            :disabled="vehicle.brand == 0"
                             @change="fetchYears"
                         >
                             <option value="0" selected>Selecione um modelo</option>
@@ -271,7 +271,7 @@
                             id="years"
                             name="years"
                             v-model="vehicle.year"
-                            :disabled="allYears == null"
+                            :disabled="vehicle.model == 0"
                             @change="fetchFipe"
                         >
                             <option value="0" selected>Selecione um ano</option>
@@ -288,7 +288,6 @@
             </fieldset>
 
             <div class="resultadoPrecoMedioFipe" v-if="vehicle.fipe != null" v-cloak>
-                <p></p>
                 <p>{{ vehicle.fipe.Marca }}</p>
                 <h4 style="margin-top: -15px">{{ vehicle.fipe.Modelo }}</h4>
                 <p style="margin-top: -5px">{{ vehicle.fipe.AnoModelo }}</p>
@@ -296,8 +295,16 @@
                     Preço:
                     <span class="price" style="color: greenyellow">{{ vehicle.fipe.Valor }}</span>
                 </h4>
+                <p style="font-size: 15px; margin-top: 15px">
+                    Ref: <span>{{ vehicle.fipe.MesReferencia }}</span>
+                </p>
             </div>
-            <input type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%" />
+            <input
+                type="submit"
+                class="btn btn-primary mt-3 mb-3"
+                style="width: 100%"
+                value="Cadastrar"
+            />
         </form>
     </div>
 </template>
