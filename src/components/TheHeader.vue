@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid header mb-3">
-        <header class="container p-3">
+    <div class="container-fluid header">
+        <header class="container p-2">
             <div class="row">
                 <div class="col-4">
                     <RouterLink to="/"
