@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid header">
-        <header class="container p-2">
+    <header class="container-fluid header">
+        <div class="container p-2">
             <div class="row">
                 <div class="col-4">
                     <RouterLink to="/"
@@ -17,8 +17,8 @@
                     </nav>
                 </div>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
 </template>
 
 <script>
