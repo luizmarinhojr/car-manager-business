@@ -64,7 +64,7 @@
                         v-model="moreData"
                     />
                     <label class="form-check-label" for="moreData">
-                        Inserir dados para emissão de nota?
+                        Inserir dados para emissão de nota? (opcional)
                     </label>
                 </div>
 
@@ -286,10 +286,19 @@
                     </div>
                 </div>
             </fieldset>
+
+            <div class="resultadoPrecoMedioFipe" v-if="vehicle.fipe != null" v-cloak>
+                <p></p>
+                <p>{{ vehicle.fipe.Marca }}</p>
+                <h4 style="margin-top: -15px">{{ vehicle.fipe.Modelo }}</h4>
+                <p style="margin-top: -5px">{{ vehicle.fipe.AnoModelo }}</p>
+                <h4>
+                    Preço:
+                    <span class="price" style="color: greenyellow">{{ vehicle.fipe.Valor }}</span>
+                </h4>
+            </div>
+            <input type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%" />
         </form>
-        <div class="resultadoPrecoMedioFipe" v-if="vehicle.fipe != null" v-cloak>
-            <h3 style="color: green">Preço: {{ vehicle.fipe.Valor }}</h3>
-        </div>
     </div>
 </template>
 
@@ -427,5 +436,11 @@ export default {
 
 .form-floating > .form-select ~ label::after {
     background-color: #fff0 !important;
+}
+
+.resultadoPrecoMedioFipe {
+    border: solid rgba(255, 255, 255, 0.26) 1px;
+    border-radius: 10px;
+    padding: 15px;
 }
 </style>
