@@ -33,13 +33,11 @@ export default {
         return {
             vehicle: {
                 fipe: null
-            },
-            client: {}
+            }
         }
     },
     mounted() {
         this.vehicle = this.$refs.registerForm.$refs.VehicleForm.vehicle
-        this.client = this.$refs.registerForm.$refs.ClienfForm.client
     }
 }
 </script>
