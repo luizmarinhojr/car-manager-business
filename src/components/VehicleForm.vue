@@ -106,6 +106,7 @@
 </template>
 
 <script>
+const url = 'https://parallelum.com.br/fipe/api/v1/'
 export default {
     data() {
         return {
@@ -136,29 +137,27 @@ export default {
                 })
         },
         fetchBrands() {
-            this.fetchData(
-                `https://parallelum.com.br/fipe/api/v1/${this.vehicle.type}/marcas`
-            ).then((json) => {
+            this.fetchData(`${url}${this.vehicle.type}/marcas`).then((json) => {
                 this.allBrands = json
             })
         },
         fetchModels() {
-            this.fetchData(
-                `https://parallelum.com.br/fipe/api/v1/${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos`
-            ).then((json) => {
-                this.allModels = json.modelos
-            })
+            this.fetchData(`${url}${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos`).then(
+                (json) => {
+                    this.allModels = json.modelos
+                }
+            )
         },
         fetchYears() {
             this.fetchData(
-                `https://parallelum.com.br/fipe/api/v1/${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos/${this.vehicle.model}/anos`
+                `${url}${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos/${this.vehicle.model}/anos`
             ).then((json) => {
                 this.allYears = json
             })
         },
         fetchFipe() {
             this.fetchData(
-                `https://parallelum.com.br/fipe/api/v1/${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos/${this.vehicle.model}/anos/${this.vehicle.year}`
+                `${url}${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos/${this.vehicle.model}/anos/${this.vehicle.year}`
             ).then((json) => {
                 this.vehicle.fipe = json
             })
