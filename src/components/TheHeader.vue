@@ -53,7 +53,7 @@
                                 >Estoque</RouterLink
                             >
                         </li>
-                        <li class="nav-item ps-3">
+                        <li class="nav-item ps-lg-3">
                             <RouterLink
                                 to="/cadastrar-veiculo"
                                 :class="`nav-link ${$route.name == 'cadastrar' ? 'active' : ''} menu-link cadastrar-botao`"
@@ -75,6 +75,9 @@ export default {}
 <style scoped>
 header {
     background-color: rgb(22, 22, 22);
+}
+.navbar-nav {
+    align-items: start;
 }
 .menu-link {
     color: var(--bs-heading-color);
