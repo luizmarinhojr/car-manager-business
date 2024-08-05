@@ -3,10 +3,10 @@
         <div class="col-md form-floating mb-3">
             <input
                 type="text"
-                :class="`form-control ${client.name.length > 1 ? 'is-valid' : ''}`"
+                :class="`form-control ${client.first_name.length > 1 ? 'is-valid' : ''}`"
                 id="clientName"
                 placeholder="Campo Obrigatório"
-                v-model="client.name"
+                v-model="client.first_name"
                 required
             />
             <label class="input_label" for="clientName">Nome</label>
@@ -15,10 +15,10 @@
         <div class="col-md form-floating mb-3">
             <input
                 type="text"
-                :class="`form-control ${client.lastName.length > 3 ? 'is-valid' : ''}`"
+                :class="`form-control ${client.last_name.length > 3 ? 'is-valid' : ''}`"
                 id="clientLastName"
                 placeholder="Campo Obrigatório"
-                v-model="client.lastName"
+                v-model="client.last_name"
                 required
             />
             <label class="input_label" for="clientLastName">Sobrenome</label>
@@ -41,11 +41,10 @@
         <div class="col-md form-floating mb-3">
             <input
                 type="email"
-                :class="`form-control ${client.email.includes('@') && client.email.includes('.') ? 'is-valid' : ''}`"
+                :class="`form-control ${client.email != null && client.email.includes('@') && client.email.includes('.') ? 'is-valid' : ''}`"
                 id="email"
                 placeholder="Campo Obrigatório"
                 v-model="client.email"
-                required
             />
             <label class="input_label" for="email">E-mail</label>
         </div>
@@ -83,10 +82,10 @@
                 <div class="col-md form-floating mb-3">
                     <input
                         type="date"
-                        :class="`form-control ${client.dateBirth.length == 10 ? 'is-valid' : ''}`"
+                        :class="`form-control ${client.birth_date != null && client.birth_date.length == 10 ? 'is-valid' : ''}`"
                         id="dateBirth"
                         placeholder="Campo Obrigatório"
-                        v-model="client.dateBirth"
+                        v-model="client.birth_date"
                         required
                     />
                     <label class="input_label" for="dateBirth">Nascimento</label>
@@ -96,11 +95,11 @@
                 <div class="col-md-4 form-floating mb-3">
                     <input
                         type="text"
-                        :class="`form-control ${validation.zip_code == null ? '' : validation.zip_code ? 'is-valid' : 'is-invalid'}`"
+                        :class="`form-control ${validation.cep == null ? '' : validation.zip_code ? 'is-valid' : 'is-invalid'}`"
                         id="zip_code"
                         v-maska="'#####-###'"
                         placeholder="Campo Obrigatório"
-                        v-model="client.address.zip_code"
+                        v-model="client.address.cep"
                         @blur="fetchAddress"
                         required
                     />
@@ -110,7 +109,7 @@
                 <div class="col-md-8 form-floating mb-3">
                     <input
                         type="text"
-                        :class="`form-control ${client.address.street.length > 5 ? 'is-valid' : ''}`"
+                        :class="`form-control ${client.address.street != null && client.address.street.length > 5 ? 'is-valid' : ''}`"
                         id="street"
                         maxlength="30"
                         placeholder="Campo Obrigatório"
@@ -125,7 +124,7 @@
                 <div class="col-md-8 form-floating mb-3">
                     <input
                         type="text"
-                        :class="`form-control ${client.address.neighborhood.length > 5 ? 'is-valid' : ''}`"
+                        :class="`form-control ${client.address.neighborhood != null && client.address.neighborhood.length > 5 ? 'is-valid' : ''}`"
                         id="neighborhood"
                         maxlength="30"
                         placeholder="Campo Obrigatório"
@@ -137,7 +136,7 @@
                 <div class="col-md-4 form-floating mb-3">
                     <input
                         type="text"
-                        :class="`form-control ${client.address.number.length > 0 ? 'is-valid' : ''}`"
+                        :class="`form-control ${client.address.number != null && client.address.number.length > 0 ? 'is-valid' : ''}`"
                         id="number"
                         maxlength="5"
                         placeholder="Campo Obrigatório"
@@ -149,10 +148,10 @@
             </div>
 
             <div class="row">
-                <div class="col-md-8 form-floating mb-3">
+                <div class="col-md-6 form-floating mb-3">
                     <input
                         type="text"
-                        :class="`form-control ${client.address.city.length > 5 ? 'is-valid' : ''}`"
+                        :class="`form-control ${client.address.city != null && client.address.city.length > 5 ? 'is-valid' : ''}`"
                         id="city"
                         maxlength="30"
                         placeholder="Campo Obrigatório"
@@ -162,10 +161,10 @@
                     <label class="input_label" for="city">Cidade</label>
                 </div>
 
-                <div class="col-md-4 form-floating mb-3">
+                <div class="col-md-2 form-floating mb-3">
                     <input
                         type="text"
-                        :class="`form-control ${client.address.state.length == 2 ? 'is-valid' : ''}`"
+                        :class="`form-control ${client.address.state != null && client.address.state.length == 2 ? 'is-valid' : ''}`"
                         id="state"
                         maxlength="30"
                         v-maska="'@@'"
@@ -174,6 +173,19 @@
                         required
                     />
                     <label class="input_label" for="state">Estado</label>
+                </div>
+
+                <div class="col-md-4 form-floating mb-3">
+                    <input
+                        type="text"
+                        :class="`form-control ${client.address.country != null && client.address.country.length > 5 ? 'is-valid' : ''}`"
+                        id="country"
+                        maxlength="30"
+                        placeholder="Campo Obrigatório"
+                        v-model="client.address.country"
+                        required
+                    />
+                    <label class="input_label" for="country">País</label>
                 </div>
             </div>
         </div>
@@ -187,20 +199,21 @@ export default {
     data() {
         return {
             client: {
-                name: '',
-                lastName: '',
+                first_name: '',
+                last_name: '',
                 cellphone: '',
-                email: '',
-                moreData: '',
-                cpf: '',
-                dateBirth: '',
+                email: null,
+                moreData: null,
+                cpf: null,
+                birth_date: null,
                 address: {
-                    zip_code: '',
-                    street: '',
-                    number: '',
-                    neighborhood: '',
-                    city: '',
-                    state: ''
+                    cep: null,
+                    street: null,
+                    number: null,
+                    neighborhood: null,
+                    city: null,
+                    state: null,
+                    country: null
                 }
             },
             validation: {
@@ -211,12 +224,12 @@ export default {
     },
     methods: {
         fetchAddress() {
-            if (this.client.address.zip_code.length == 9) {
-                fetch(`https://viacep.com.br/ws/${this.client.address.zip_code}/json/`)
+            if (this.client.address.cep.length == 9) {
+                fetch(`https://viacep.com.br/ws/${this.client.address.cep}/json/`)
                     .then((response) => response.json())
                     .then((json) => {
                         if ('erro' in json) {
-                            this.validation.zip_code = false
+                            this.validation.cep = false
                             console.error('O CEP informado não existe')
                         } else {
                             this.validation.zip_code = true

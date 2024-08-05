@@ -40,13 +40,27 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-4 form-floating mb-3">
+        <div class="col-md-2 form-floating mb-3">
+            <input
+                type="text"
+                :class="`form-control ${vehicle.result.license_plate.length == 8 ? 'is-valid' : ''}`"
+                id="license_plate"
+                maxlength="8"
+                v-maska="'@@@-#*##'"
+                placeholder="Campo Obrigatório"
+                v-model="vehicle.result.license_plate"
+                required
+            />
+            <label class="input_label" for="license_plate">Placa</label>
+        </div>
+
+        <div class="col-md-3 form-floating mb-3">
             <select
                 class="form-select"
                 id="brands"
                 name="brands"
                 v-model="vehicle.brand"
-                :disabled="vehicle.type === ''"
+                :disabled="vehicle.type === null"
                 @change="fetchModels"
                 required
             >
@@ -82,7 +96,7 @@
             <label class="select_label" for="models">Modelo do veículoo</label>
         </div>
 
-        <div class="col-md-4 form-floating mb-3">
+        <div class="col-md-3 form-floating mb-3">
             <select
                 class="form-select"
                 id="years"
@@ -111,11 +125,20 @@ export default {
     data() {
         return {
             vehicle: {
-                type: '',
+                type: null,
                 brand: '',
                 model: '',
                 year: '',
-                fipe: null
+                result: {
+                    fipe_price: null,
+                    license_plate: '',
+                    brand: null,
+                    model: null,
+                    year: null,
+                    fuel: null,
+                    fipe_code: null,
+                    reference_month: null
+                }
             },
             allBrands: null,
             allModels: null,
@@ -158,9 +181,22 @@ export default {
         fetchFipe() {
             this.fetchData(
                 `${url}${this.vehicle.type}/marcas/${this.vehicle.brand}/modelos/${this.vehicle.model}/anos/${this.vehicle.year}`
-            ).then((json) => {
-                this.vehicle.fipe = json
-            })
+            )
+                .then((json) => {
+                    this.vehicle.result.fipe_price = this.convertToFloat(json.Valor)
+                    this.vehicle.result.brand = json.Marca
+                    this.vehicle.result.model = json.Modelo
+                    this.vehicle.result.year = json.AnoModelo
+                    this.vehicle.result.fuel = json.Combustivel
+                    this.vehicle.result.fipe_code = json.CodigoFipe
+                    this.vehicle.result.reference_month = json.MesReferencia
+                })
+                .catch((error) => console.error('Erro ao fazer a requisição:', error))
+        },
+        convertToFloat(value) {
+            let numericValue = value.replace(/[^0-9,]/g, '')
+            numericValue = numericValue.replace(',', '.')
+            return parseFloat(numericValue)
         }
     }
 }

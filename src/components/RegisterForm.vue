@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="postForm">
         <fieldset>
             <legend>Dados do cliente</legend>
             <ClientForm ref="ClienfForm" />
@@ -25,9 +25,6 @@ import ClientForm from './ClientForm.vue'
 export default {
     data() {
         return {
-            vehicle: {
-                fipe: null
-            },
             client: {}
         }
     },
@@ -40,13 +37,21 @@ export default {
     },
     methods: {
         updateData() {
-            this.vehicle = this.$refs.VehicleForm.vehicle
             this.client = this.$refs.ClienfForm.client
+            this.client.vehicle = this.$refs.VehicleForm.vehicle.result
         },
         submitForm() {
             this.updateData()
-            console.log(`Nome do cliente: ${this.client.name}\nNo do modelo do carro: }`)
-            alert('Cadastrado com sucesso!')
+        },
+        async postForm() {
+            this.updateData()
+            fetch('http://localhost:8080/clients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.client)
+            })
         }
     }
 }
